@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -37,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.create');
     }
 
     /**
@@ -48,7 +49,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $this->userService->validator($request);
+        if ($validate->fails()) {
+            return redirect('users/create')->withErrors($validate->errors())->withInput();
+        }
+        dd('controller');
+        $this->userService->storeUser($request);
+        return Redirect::route('users.index');
     }
 
     /**
