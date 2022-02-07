@@ -49,11 +49,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate request
         $validate = $this->userService->validator($request);
         if ($validate->fails()) {
+            // Validate fall, redirect form with error
             return redirect('users/create')->withErrors($validate->errors())->withInput();
         }
-        dd('controller');
+
+        // Validate success and store User
         $this->userService->storeUser($request);
         return Redirect::route('users.index');
     }
@@ -66,7 +69,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        // Get user from Database
+        $user = $this->userService->findUser($id);
+
+        return view('user.info', ['user' => $user]);
     }
 
     /**
@@ -89,7 +95,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Get user from Database
+        $user = $this->userService->findUser($id);
+
+        $this->userService->updateUser($request, $user);
+
+        return $this->index();
     }
 
     /**
@@ -100,6 +111,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = $this->userService->findUser($id);
+        $this->userService->deleteUser($user);
+
+        return $this->index();
     }
 }

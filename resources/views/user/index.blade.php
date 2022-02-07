@@ -27,10 +27,10 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="d-flex">
-                                            <div class="pr-1">
-                                                <a href="{{ route('users.edit' , $user->id) }}" class="btn btn-info">Reset
-                                                    Pass</a>
+                                        <div class="pr-1">
+                                                <a href="/users/{{$user->id}}" class="btn btn-success">Detail</a>
                                             </div>
+                                            
                                             <div class="pr-1">
                                                 <form action="{{ route('users.destroy',$user->id) }}" method="post">
                                                     @method('delete')

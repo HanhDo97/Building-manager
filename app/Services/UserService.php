@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserService
 {
-    public $credential = [
-        'email' => '',
-        'name' => '',
-        'password' => ''
-    ];
-
     public function getAll()
     {
         $users = User::All();
@@ -31,13 +25,6 @@ class UserService
 
     public function storeUser($request)
     {
-        $validate = $this->validator($request);
-        if ($validate->fails()) {
-            return redirect('users.create')->withErrors($validate->errors())->withInput();
-        }
-
-        dd(1);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -45,5 +32,24 @@ class UserService
         ]);
 
         return $user;
+    }
+
+    public function findUser($id)
+    {
+        $user = User::find($id);
+        return $user;
+    }
+
+    public function updateUser($request, $user)
+    {
+        $user->name = $request->name ? $request->name : $user->name;
+        $user->email = $request->email ? $request->email : $user->email;
+        $user->save();
+        return $user;
+    }
+
+    public function deleteUser($user)
+    {
+        return $user->delete();
     }
 }
