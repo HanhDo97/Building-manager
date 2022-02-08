@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContractController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('users',UserController::class);
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('contracts', ContractController::class);
+    Route::resource('users', UserController::class);
+});
+
 /*
 Route::resource('users','UserController');
 Route::resource('contracts','ContractController');

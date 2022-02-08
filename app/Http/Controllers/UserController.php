@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserNew;
 use App\Services\UserService;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -16,7 +19,7 @@ class UserController extends Controller
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -48,16 +51,19 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {      
         // Validate request
         $validate = $this->userService->validator($request);
         if ($validate->fails()) {
             // Validate fall, redirect form with error
             return redirect('users/create')->withErrors($validate->errors())->withInput();
         }
-
+      
         // Validate success and store User
-        $this->userService->storeUser($request);
+        $user = $this->userService->storeUser($request); 
+        
+        Mail::to($user)->send(new UserNew());
+      
         return Redirect::route('users.index');
     }
 
