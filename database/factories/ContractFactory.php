@@ -14,8 +14,10 @@ class ContractFactory extends Factory
     public function definition()
     {
         return [
+            'room_id' => random_int(1,42),
             'contractPeriod' => random_int(1,5),
             'outOfDate' => $this->faker->dateTimeBetween('-30 days', '+30 days'),
         ];
+    
     }
 }

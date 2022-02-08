@@ -10,6 +10,7 @@ class ContractService {
 
     public function deleteContract($contract)
     {
+        $contract->room->delete();
         return $contract->delete();
     }
 

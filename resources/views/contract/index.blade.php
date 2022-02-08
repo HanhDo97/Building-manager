@@ -21,7 +21,7 @@
                     <tr>
                         <td>{{ ++$key }}</td>
                         <td>C{{$contract->id}}</td>
-                        <td>Room</td>
+                        <td>{{$contract->room->roomNumber}}</td>
                         <td>{{$contract->contractPeriod}}</td>
                         <td>{{$contract->outOfDate}}</td>
                         <td>

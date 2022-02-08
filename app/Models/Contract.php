@@ -14,4 +14,9 @@ class Contract extends Model
     protected $fillable = [
         'contractPeriod', 'outOfDate'
     ];
+
+    public function room()
+    {
+        return $this->hasOne(Room::class);
+    }
 }

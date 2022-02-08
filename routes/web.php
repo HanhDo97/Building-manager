@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,9 +25,13 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('contracts', ContractController::class);
+    Route::resource('contracts', ContractController::class)->missing(function(){
+        return redirect('contracts');
+    });
     Route::resource('users', UserController::class);
 });
+
+Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
 
 /*
 Route::resource('users','UserController');

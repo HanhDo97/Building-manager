@@ -15,6 +15,7 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
+        //    $table->unsignedBigInteger('room_id');
             $table->integer('contractPeriod');
             $table->date('outOfDate')->nullable();
             $table->string('contractStatus')->default('Inactive');

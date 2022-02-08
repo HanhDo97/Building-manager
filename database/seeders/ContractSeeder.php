@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Contract;
+use Faker\Factory as Faker;
 
 class ContractSeeder extends Seeder
 {
@@ -14,6 +15,13 @@ class ContractSeeder extends Seeder
      */
     public function run()
     {
-        Contract::factory(10)->create();
+        $faker = Faker::create();
+        for ($i = 1; $i <= 42; $i++) {
+            Contract::create([
+                //'room_id' => $i,
+                'contractPeriod' => random_int(1, 5),
+                'outOfDate' => $faker->dateTimeBetween('-30 days', '+30 days'),
+            ]);
+        }
     }
 }
