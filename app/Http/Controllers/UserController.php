@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\UserNew;
+
 use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -58,12 +58,13 @@ class UserController extends Controller
             // Validate fall, redirect form with error
             return redirect('users/create')->withErrors($validate->errors())->withInput();
         }
-      
+  
         // Validate success and store User
         $user = $this->userService->storeUser($request); 
         
-        Mail::to($user)->send(new UserNew());
-      
+        // Send Email to User
+        $this->userService->sendMail($user);
+       
         return Redirect::route('users.index');
     }
 
@@ -78,7 +79,10 @@ class UserController extends Controller
         // Get user from Database
         $user = $this->userService->findUser($id);
 
-        return view('user.info', ['user' => $user]);
+        $this->userService->sendNotification($user);
+
+        return $this->index();
+       // return view('user.info', ['user' => $user]);
     }
 
     /**

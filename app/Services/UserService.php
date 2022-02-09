@@ -5,9 +5,22 @@ namespace App\Services;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserNew;
+use App\Notifications\RegisterSuccess;
 
 class UserService
 {
+    public function sendNotification($user)
+    {
+        return $user->notify(new RegisterSuccess($user));
+    }
+
+    public function sendMail($user)
+    {
+        return Mail::to($user)->send(new UserNew());
+    }
+
     public function getAll()
     {
         $users = User::All();
